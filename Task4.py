@@ -27,9 +27,9 @@ class Student:
         if mid_sum == 0:
             return f'Оценок нет!'
         else:
-            return round(mid_sum / len(self.grades.values()), 2) # УБРАЛА F-СТРОКУ, ОКРУГЛЯЕМ ДО 2 ЗНАКОВ ПОСЛЕ ЗАПЯТОЙ
+            return round(mid_sum / len(self.grades.values()), 2)
 
-    def __lt__(self, other): # ПОДКОРРЕКТИРОВАЛА МЕТОДЫ. ДУМАЮ ТАК БУДЕТ ПРАВИЛЬНЕЕ
+    def __lt__(self, other):
       if isinstance(other, Student):
         return self.average_grades() < other.average_grades()
       else:
@@ -61,7 +61,7 @@ class Mentor:
     def __init__(self, name, surname):
         self.name = name
         self.surname = surname
-        self.courses_attached = [] # закрепленные за преподавателем список курсов
+        self.courses_attached = []
 
 
 class Reviewer(Mentor):
@@ -84,7 +84,7 @@ class Reviewer(Mentor):
 class Lecturer(Mentor):
     def __init__(self, name, surname):
         super().__init__(name, surname)
-        self.grades = {} # ДОБАВИЛА self
+        self.grades = {}
 
     def average_grades_lecturer(self):
         mid_sum = 0
@@ -97,9 +97,9 @@ class Lecturer(Mentor):
         if mid_sum == 0:
             return f'Оценок нет!'
         else:
-            return round(mid_sum / len(self.grades.values()), 2) # УБРАЛА F-СТРОКУ, ОКРУГЛЯЕМ ДО 2 ЗНАКОВ ПОСЛЕ ЗАПЯТОЙ
+            return round(mid_sum / len(self.grades.values()), 2)
 
-    def __lt__(self, other): # ТАКЖЕ ПОДКОРРЕКТИРОВАЛА МЕТОДЫ
+    def __lt__(self, other):
       if isinstance(other, Lecturer):
         return self.average_grades_lecturer() < other.average_grades_lecturer()
       else:
@@ -120,11 +120,6 @@ class Lecturer(Mentor):
 
     def __str__(self):
         return f"Имя: {self.name}\nФамилия: {self.surname}\nСредняя оценка за лекции:{self.average_grades_lecturer()}"
-
-
-
-
-
 
 
 student1 = Student("Иван", "Иванов", "М")
@@ -151,7 +146,7 @@ any_reviewer.rate_hw(student2, 'Git', 6)
 
 print(student1, student2, sep='\n')
 print()
-# ТУТ ВСЕ ОПЕРАТОРЫ РАБОТАЮТ. ВОЗВРАЩАЮТ TRUE или FALSE как обычные операторы сравнения. МОЖЕТЕ НАПИСАТЬ КОД, КОТОРЫЙ ПОКАЖЕТ КАКОЙ СТУДЕНТ ЛУЧШЕ. МОЖНО ОБЫЧНУЮ КОНСТРУКЦИЮ IF ELIF ПРЯМО ЗДЕСЬ. В КЛАССЕ ЭТО НЕОБЯЗАТЕЛЬНО ПРОПИСЫВАТЬ
+
 print(student1 < student2)
 print(student1 > student2)
 print(student1 == student2)
@@ -172,7 +167,45 @@ student1.lecturer_grades('Python', 10, lecturer2)
 print()
 print(lecturer1, lecturer2, sep='\n')
 print()
-# ТАКЖЕ МОЖЕТЕ ОПРЕДЕЛИТЬ ЛУЧШЕГО ЛЕКТОРА
+
 print(lecturer1 < lecturer2)
 print(lecturer1 > lecturer2)
 print(lecturer1 == lecturer2)
+
+# Создаем список студентов
+student_list = [student_1, student_2, student_3]
+
+# Создаем список лекторов
+lecturer_list = [best_lecturer_1, best_lecturer_2, best_lecturer_3]
+
+def student_rating(student_list, course_name):
+
+    sum_all = 0
+    count_all = 0
+    for stud in student_list:
+       if stud.courses_in_progress == [course_name]:
+            sum_all += stud.average_rating
+            count_all += 1
+    average_for_all = sum_all / count_all
+    return average_for_all
+
+
+def lecturer_rating(lecturer_list, course_name):
+
+    sum_all = 0
+    count_all = 0
+    for lect in lecturer_list:
+        if lect.courses_attached == [course_name]:
+            sum_all += lect.average_rating
+            count_all += 1
+    average_for_all = sum_all / count_all
+    return average_for_all
+
+
+# Выводим результат подсчета средней оценки по всем студентам для данного курса
+print(f"Средняя оценка для всех студентов по курсу {'Python'}: {student_rating(student_list, 'Python')}")
+print()
+
+# Выводим результат подсчета средней оценки по всем лекорам для данного курса
+print(f"Средняя оценка для всех лекторов по курсу {'Python'}: {lecturer_rating(lecturer_list, 'Python')}")
+print()
